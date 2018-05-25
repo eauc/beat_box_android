@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,14 @@ public class BeatBoxFragment extends Fragment {
         return new BeatBoxFragment();
     }
 
+    private String toto;
     private BeatBox mBeatBox;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBeatBox = new BeatBox(getActivity());
+        setRetainInstance(true);
     }
 
     @Override
@@ -35,6 +38,12 @@ public class BeatBoxFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         binding.recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBeatBox.release();
     }
 
     private class SoundHolder extends RecyclerView.ViewHolder {
